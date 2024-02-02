@@ -149,8 +149,5 @@ MonoBehaviour:
   bulletRB: {fileID: 8253357519081923203}
   DestroyAnim: {fileID: 315714664207355134, guid: a0af6432e98266f46bf14324242a05dd,
     type: 3}
+  damage: 300
   bulletSpeed: 30
-  bulletSprite: {fileID: 6258371004564028601}
-  ligthBullet: {fileID: 21300000, guid: 5deff0a435f7aff43be451055a5d555d, type: 3}
-  sniperBullet: {fileID: 21300000, guid: 84c072e35cd20eb408657d2a228bb6b1, type: 3}
-  rocketBullet: {fileID: 21300000, guid: c143aadfc38d40f4aabc25fd7408b9ad, type: 3}

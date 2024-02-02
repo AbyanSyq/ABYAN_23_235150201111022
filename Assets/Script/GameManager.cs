@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,34 +38,25 @@ public class GameManager : MonoBehaviour
 
     public void GameStart(){
         gameStart = true;
+        Time.timeScale = 1;
+        stageManager();
     }
 
     public void playPause(){
-        if (gameStart)
-        {
-            if(Time.timeScale == 1){
-                Time.timeScale = 0;
-            }else{
-                Time.timeScale = 1;
-            }
+
+        if(Time.timeScale == 1){
+            Time.timeScale = 0;
+            menuManagerObject.GetComponent<MenuManager>().pauseMenuPanel(true);
+        }else{
+            Time.timeScale = 1;
+            menuManagerObject.GetComponent<MenuManager>().pauseMenuPanel(false);
         }
+
         
     }
     private void Update() {
         InputManager();
         timer += Time.deltaTime;
-
-        if (stageNow < 4 && gameStart)
-        {   
-            Debug.Log("IF SATU");
-            if (!stage01Active && !stage02Active && enemyCount <= 0 && !stage03Active)
-            {   
-            enemySpawnCount = 0;
-            stageManager();
-            timer = 0; 
-            }
-        }
-        
 
         if (stage01Active)
         {
@@ -76,59 +68,78 @@ public class GameManager : MonoBehaviour
         if(stage03Active){
             stage03();
         }
+
     }
     public void stageManager(){
-        stageNow++;
-        Debug.Log("STAGE");
+        stageNow++; 
+        
         switch (stageNow)
         {
-            case 1: stage01Active = true;break;
-            case 2: stage02Active = true;break;
-            case 3: stage03Active = true;break;
-            default: playPause();break;
+            case 1: Invoke("stage01",2f);break;
+            case 2: Invoke("stage02",2f);break;
+            case 3: Invoke("stage03",2f);break;
+            default: ;break;
+        }
+        if (stageNow < 4)
+        {
+            menuManagerObject.GetComponent<MenuManager>().stagePanelManager(stageNow);
         }
     }
     public void InputManager(){
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             playPause();
         }
     }
     public void stage01(){
+        Debug.Log("stage 01 called");
+        stage01Active = true;
         if (timer >= stage01Interval)       
         {
             if (enemySpawnCount < stage01MaxEnemy)
             {
                 SpawnEnemy();
                 enemySpawnCount++;
-            }else{
+            }else if(enemyCount <= 0){
+                enemySpawnCount = 0;
                 stage01Active = false;
+                stageManager();
+
             }
             timer = 0;
         }
     }
     public void stage02(){
+        Debug.Log("stage 02 called");
+        stage02Active = true;
         if (timer >= stage02Interval)
         {
             if (enemySpawnCount < stage02MaxEnemy)
             {
                 SpawnEnemy();
                 enemySpawnCount++;
-            }else{
+            }else if(enemyCount <= 0){
+                enemySpawnCount = 0;
                 stage02Active = false;
+                stageManager();
             }
             timer = 0;
         }
     }
     public void stage03(){
+        Debug.Log("stage 03 called");
+        stage03Active = true;
         if (timer >= stage03Interval)
         {
             if (enemySpawnCount < stage03MaxEnemy)
             {
                 SpawnEnemy();
                 enemySpawnCount++;
-            }else{
+            }else if(enemyCount <= 0){
+                enemySpawnCount = 0;
                 stage03Active = false;
+                stageManager();
+                menuManagerObject.GetComponent<MenuManager>().VictoryCondition();
             }
             timer = 0;
         }
@@ -137,7 +148,7 @@ public class GameManager : MonoBehaviour
     public void EnemyCount(int magnitude){
         enemyCount += magnitude;
     }
-    public void SpawnEnemy(){
+    public void SpawnEnemy(){//spawn enemy in random place
         int random = Random.Range(1,7);
         Transform spawnpoint = Bottom;
         switch (random){
@@ -151,8 +162,4 @@ public class GameManager : MonoBehaviour
         }
         GameObject tiktok = Instantiate(enemyTiktok, spawnpoint.position, Quaternion.identity);
     }
-    public void LoseCondiditon(){
-        playPause();
-    }
-
 }

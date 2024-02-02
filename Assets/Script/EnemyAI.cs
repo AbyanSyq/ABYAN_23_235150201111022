@@ -13,6 +13,8 @@ public class EnemyAI : MonoBehaviour
     public float speed = 200f;
     public float nextWaitPointDistance = 3f;//jarak character ke waypoint sebelum gerak ke point selanjutnya
 
+    public GameObject DeathAnim;
+
     Path path;//path charakter ke target
     int currentWayPoint = 0; 
     bool reachedEndOfPath = false;
@@ -31,7 +33,7 @@ public class EnemyAI : MonoBehaviour
     public Gradient colorGradient;
 
     private void Awake() {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");// get Enemy Game Object
         if (player != null)
         {
             target = player.GetComponent<Transform>();
@@ -48,9 +50,9 @@ public class EnemyAI : MonoBehaviour
         head.position = rb.position;
         HeadRotation();
     }
-    void UpdatePath(){
+    void UpdatePath(){//searching a path form character position to target
         if(seeker.IsDone()){
-        seeker.StartPath(rb.position, target.position, OnPathComplete);//searching a path form character position to target
+        seeker.StartPath(rb.position, target.position, OnPathComplete);
         }
     }
 
@@ -74,8 +76,8 @@ public class EnemyAI : MonoBehaviour
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWayPoint] - rb.position).normalized;//dont get it
-        Vector2 force = direction * speed * Time.fixedDeltaTime;
 
+        Vector2 force = direction * speed * Time.fixedDeltaTime;
         rb.AddForce(force);
 
         float distance =  Vector2.Distance(rb.position, path.vectorPath[currentWayPoint]);
@@ -102,7 +104,6 @@ public class EnemyAI : MonoBehaviour
     }
 
     public void SetHealth(float magnitude){
-        Debug.Log(magnitude);
         currenthealth += magnitude;
         slider.value = currenthealth;
         if(currenthealth <= 0){
@@ -110,14 +111,10 @@ public class EnemyAI : MonoBehaviour
         }
         healthImage.color = colorGradient.Evaluate(slider.normalizedValue);
     }
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if(collision.gameObject.CompareTag("PlayerBullet")){
-            SetHealth(-playerDamage);
-        }
-    }
-
     public void Destroy(){
         FindAnyObjectByType<GameManager>().EnemyCount(-1);
+        GameObject Anim = Instantiate(DeathAnim, transform.position, Quaternion.Euler(0,0,transform.rotation.z));
+        Destroy(Anim, 0.5f);
         Destroy(gameObject);
     }
 }

@@ -47,9 +47,15 @@ TagManager:
   - name: Ground
     uniqueID: 2425651459
     locked: 0
-  - name: Decoration
-    uniqueID: 4250941897
+  - name: Obstacle
+    uniqueID: 776632861
     locked: 0
   - name: Player
     uniqueID: 4189426099
+    locked: 0
+  - name: Decoration
+    uniqueID: 4250941897
+    locked: 0
+  - name: Bullet
+    uniqueID: 3100771669
     locked: 0

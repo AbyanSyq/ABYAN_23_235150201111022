@@ -480,6 +480,8 @@ MonoBehaviour:
   healthBar: {fileID: 7627118184997641194}
   speed: 1000
   nextWaitPointDistance: 1
+  DeathAnim: {fileID: 1043596617193732239, guid: 5928bcac667c2a14991359f6b1491123,
+    type: 3}
   head: {fileID: 7627118185232975418}
   headRotationSpeed: 100
   slider: {fileID: 7627118184997641196}
@@ -614,7 +616,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: -844294867
+  m_SortingLayerID: -1194195627
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &7627118185547619442

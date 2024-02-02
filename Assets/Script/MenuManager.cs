@@ -15,6 +15,10 @@ public class MenuManager : MonoBehaviour
     public GameObject healthBarCanvas;
     public GameObject tankSetup;
     public GameObject tankInfo;
+    public GameObject gameOverPanel;
+    public GameObject VictoryPanel;
+    public GameObject stagePanel;
+    public Text stageText;
     
     public GameObject camera;
     public Slider hitPoint;
@@ -23,11 +27,33 @@ public class MenuManager : MonoBehaviour
     public Slider aiming;
     public Slider movement;
     public Slider handling;
-    public int tankNumber = 1;
+    public int tankNumber = 0;
 
-    public void PlayPausePanel(bool magnitude){
+
+    public Text tankTipeText;
+    private void Start() {
+        TankSetUpButton(1);
+    }
+
+    //--------------------------------------------------Pause Button Script------------------------------------------------
+    public void pauseMenuPanel(bool magnitude){
         menuPanel.SetActive(magnitude);
     }
+    public void RestartGame(){
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void BackToMainMenu(){
+
+        SceneManager.LoadScene(0);
+    }
+    public void ExitGame(){
+        Application.Quit();
+    }
+    public void Resume(){
+        FindAnyObjectByType<GameManager>().playPause();
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------
     public void TankSetUpButton(int magnitude){
         if (!gameStart)
         {
@@ -41,14 +67,40 @@ public class MenuManager : MonoBehaviour
 
             FindAnyObjectByType<TankSetUpScript>().TankSetUp(tankNumber);
 
-            hitPoint.value = player.GetComponent<PlayerScript>().health;
-            // damage.value = player.GetComponent<PlayerScript>().;
-            fireRate.value = fireRate.maxValue - player.GetComponent<PlayerScript>().fireRate;
-            // aiming.value = player.GetComponent<PlayerScript>().;
-            movement.value = player.GetComponent<PlayerScript>().moveSpeed;
-            handling.value = player.GetComponent<PlayerScript>().tankRotationSpeed;
+
+            if (tankNumber == 1 || tankNumber == 2)
+            {
+                tankTipeText.text = "RUN & GUN";
+            }else if(tankNumber >= 3 && tankNumber <= 5){
+                tankTipeText.text = "SNIPER";
+            }else{
+                tankTipeText.text = "ROKET LAUNCER";
+            }
         }
+        hitPoint.value = player.GetComponent<PlayerScript>().health;
+        damage.value = player.GetComponent<PlayerScript>().damage;
+        fireRate.value = fireRate.maxValue - player.GetComponent<PlayerScript>().fireRate;
+        aiming.value = player.GetComponent<PlayerScript>().headRotationSpeed;
+        movement.value = player.GetComponent<PlayerScript>().moveSpeed;
+        handling.value = player.GetComponent<PlayerScript>().tankRotationSpeed;
     }
+    public void LoseCondiditon(){
+        healthBarCanvas.SetActive(false);
+        gameOverPanel.SetActive(true);
+        gameStart = false;
+    }
+    public void VictoryCondition(){
+        healthBarCanvas.SetActive(false);
+        VictoryPanel.SetActive(true);
+        gameStart = false;
+    }
+
+    public void stagePanelManager(int stageNum){
+        stagePanel.SetActive(true);
+        stageText.text = stageNum.ToString();
+    }
+
+    
 
     public void StartButton(){
         gameStart = true;

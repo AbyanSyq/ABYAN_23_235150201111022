@@ -8,13 +8,7 @@ public class EnemyBullet : MonoBehaviour
     public GameObject DestroyAnim;
     public float bulletSpeed;
     public float bulletDamage;
-    public SpriteRenderer bulletSprite;
-    public Sprite body;
 
-    private void Awake() {
-        bulletRB = GetComponent<Rigidbody2D>();
-        bulletSprite.sprite = body;
-    }
     private void Start() {
         bulletRB.AddForce(transform.up * bulletSpeed, ForceMode2D.Impulse);
         Invoke("DestroyCondition", 3);
@@ -22,7 +16,7 @@ public class EnemyBullet : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Player"))
         {   
-            FindAnyObjectByType<PlayerScript>().SetHealth(-bulletDamage);
+            collision.gameObject.GetComponent<PlayerScript>().SetHealth(-bulletDamage);
         }
         DestroyCondition();
     }
