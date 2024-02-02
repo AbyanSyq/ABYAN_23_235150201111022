@@ -149,7 +149,7 @@ MonoBehaviour:
   bulletRB: {fileID: 6726238374249647822}
   DestroyAnim: {fileID: 315714664207355134, guid: a0af6432e98266f46bf14324242a05dd,
     type: 3}
-  damage: 50
+  damage: 100
   bulletSpeed: 30
   BulletTipe: 0
   radius: 0

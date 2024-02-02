@@ -6,34 +6,46 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    /*
+    Note : I want to change all scirpt variables that have to be private, but I don't have time and motivation. :)
+    */
     public bool gameStart = false;
-    public GameObject enemyTiktok;
-    public GameObject playerObject;
-    public GameObject menuManagerObject;
-    public Transform topRight;
-    public Transform topLeft;
-    public Transform Left;
-    public Transform BottomLeft;
-    public Transform Bottom;
-    public Transform BottomRight;
-    public float timer;
-    public int enemyCount;
-    public int enemySpawnCount;
-    public int stageNow = 0;
+    [SerializeField] private GameObject enemy01;
+    [SerializeField] private GameObject enemy02;
+    [SerializeField] private GameObject enemy03;
+    [SerializeField] private GameObject playerObject;
+    [SerializeField] private GameObject menuManagerObject;
+
+
+
+    //Spawn Location(transform)
+    [SerializeField] private Transform topRight;
+    [SerializeField] private Transform topLeft;
+    [SerializeField] private Transform Left;
+    [SerializeField] private Transform BottomLeft;
+    [SerializeField] private Transform Bottom;
+    [SerializeField] private Transform BottomRight;
+
+
+
+    private float timer;
+    [SerializeField] private int enemyCount;
+    [SerializeField] private int enemySpawnCount;
+    [SerializeField] private int stageNow = 0;
 
     //stage01
-    public float stage01Interval;
-    public int stage01MaxEnemy;
+    [SerializeField] private float stage01Interval;
+    [SerializeField] private int stage01MaxEnemy;
     bool stage01Active = false;
 
     //stage02
-    public float stage02Interval;
-    public int stage02MaxEnemy;
+    [SerializeField] private float stage02Interval;
+    [SerializeField] private int stage02MaxEnemy;
     bool stage02Active = false;
 
     //stage03
-    public float stage03Interval;
-    public int stage03MaxEnemy;
+    [SerializeField] private float stage03Interval;
+    [SerializeField] private int stage03MaxEnemy;
     bool stage03Active = false;
 
     public void GameStart(){
@@ -43,7 +55,6 @@ public class GameManager : MonoBehaviour
     }
 
     public void playPause(){
-
         if(Time.timeScale == 1){
             Time.timeScale = 0;
             menuManagerObject.GetComponent<MenuManager>().pauseMenuPanel(true);
@@ -51,24 +62,14 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             menuManagerObject.GetComponent<MenuManager>().pauseMenuPanel(false);
         }
-
-        
     }
     private void Update() {
         InputManager();
         timer += Time.deltaTime;
 
-        if (stage01Active)
-        {
-            stage01();
-        }
-        if(stage02Active){
-            stage02();  
-        }
-        if(stage03Active){
-            stage03();
-        }
-
+        if (stage01Active){ stage01(); }
+        if (stage02Active){ stage02(); }
+        if (stage03Active){ stage03(); }
     }
     public void stageManager(){
         stageNow++; 
@@ -98,7 +99,7 @@ public class GameManager : MonoBehaviour
         {
             if (enemySpawnCount < stage01MaxEnemy)
             {
-                SpawnEnemy();
+                SpawnEnemy(enemy01);
                 enemySpawnCount++;
             }else if(enemyCount <= 0){
                 enemySpawnCount = 0;
@@ -116,7 +117,14 @@ public class GameManager : MonoBehaviour
         {
             if (enemySpawnCount < stage02MaxEnemy)
             {
-                SpawnEnemy();
+                if (enemySpawnCount % 2 == 0)
+                {
+                    SpawnEnemy(enemy01);
+                }else
+                {
+                    SpawnEnemy(enemy02);
+                }
+                
                 enemySpawnCount++;
             }else if(enemyCount <= 0){
                 enemySpawnCount = 0;
@@ -132,8 +140,16 @@ public class GameManager : MonoBehaviour
         if (timer >= stage03Interval)
         {
             if (enemySpawnCount < stage03MaxEnemy)
-            {
-                SpawnEnemy();
+            {   if (enemySpawnCount % 5 == 0)
+                {
+                    SpawnEnemy(enemy03);
+                }else if (enemySpawnCount % 2 == 0)
+                {
+                    SpawnEnemy(enemy01);
+                }else
+                {
+                    SpawnEnemy(enemy02);
+                }
                 enemySpawnCount++;
             }else if(enemyCount <= 0){
                 enemySpawnCount = 0;
@@ -148,7 +164,7 @@ public class GameManager : MonoBehaviour
     public void EnemyCount(int magnitude){
         enemyCount += magnitude;
     }
-    public void SpawnEnemy(){//spawn enemy in random place
+    public void SpawnEnemy(GameObject EnemyObject){//spawn enemy in random place 
         int random = Random.Range(1,7);
         Transform spawnpoint = Bottom;
         switch (random){
@@ -160,6 +176,6 @@ public class GameManager : MonoBehaviour
             case 6: spawnpoint = BottomRight;   break;
             default:break;
         }
-        GameObject tiktok = Instantiate(enemyTiktok, spawnpoint.position, Quaternion.identity);
+        GameObject Enemy = Instantiate(EnemyObject, spawnpoint.position, Quaternion.identity);
     }
 }

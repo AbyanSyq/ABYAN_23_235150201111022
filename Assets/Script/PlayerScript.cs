@@ -72,6 +72,10 @@ public class PlayerScript : MonoBehaviour
     public void SetHealth(float magnitude){// edit health
         Debug.Log(magnitude);
         health += magnitude;
+        if (health >= slider.maxValue)
+        {
+            health = slider.maxValue;
+        }
         slider.value = health;
         if(health <= 0){
             destroy();
@@ -82,6 +86,7 @@ public class PlayerScript : MonoBehaviour
         fireSlider.value = timer;
     }
     public void destroy(){
+        Debug.Log("MATIII");
         FindAnyObjectByType<MenuManager>().LoseCondiditon();
         GameObject Anim = Instantiate(DeathAnim, transform.position, Quaternion.Euler(0,0,transform.rotation.z));
         Destroy(Anim, 0.5f);
@@ -95,27 +100,27 @@ public class PlayerScript : MonoBehaviour
             case 1:
                 bullet = lightBullet;
                 fireRate =  0.1f;
-                health = 500f;
+                health = 600f;
                 moveSpeed = 600f;
                 tankRotationSpeed = 400f;
                 headRotationSpeed = 400f;
-                damage = 50;
+                damage = 100;
                 break;
             case 2:
                 bullet = SniperBullet;
-                fireRate =  1.2f;
-                health = 300f;
+                fireRate =  0.8f;
+                health = 400f;
                 moveSpeed = 400;
                 tankRotationSpeed = 300f;
-                headRotationSpeed = 200f;
+                headRotationSpeed = 500f;
                 damage = 1000;
                 break;
             case 3:
                 bullet = RoketBullet;
-                fireRate =  0.8f;
-                health = 800f;
+                fireRate =  0.6f;
+                health = 1500f;
                 moveSpeed = 150f;
-                tankRotationSpeed = 100f;
+                tankRotationSpeed = 200f;
                 headRotationSpeed = 100f;
                 damage = 500;
                 break;

@@ -34,6 +34,8 @@ public class PlayerBullet : MonoBehaviour
         if( collision.gameObject.CompareTag("Enemy")){
             collision.gameObject.GetComponent<EnemyAI>().SetHealth(-damage);
             BulletEffect(BulletTipe);
+        }else if(collision.gameObject.CompareTag("Obstacle")){
+            DestroyCondition();
         }
 
     }

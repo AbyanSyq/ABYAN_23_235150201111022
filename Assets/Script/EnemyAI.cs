@@ -28,7 +28,6 @@ public class EnemyAI : MonoBehaviour
 
     public Slider slider;
     public float currenthealth;
-    public float playerDamage;
     public Image healthImage;
     public Gradient colorGradient;
 
