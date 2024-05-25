@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Security.Cryptography;
-using Mono.Cecil.Cil;
-using Unity.VisualScripting;
+
 
 public class MenuManager : MonoBehaviour
 {
@@ -31,8 +29,11 @@ public class MenuManager : MonoBehaviour
 
 
     public Text tankTipeText;
+
     private void Start() {
-        TankSetUpButton(1);
+        TankSetUpButton(0);
+        tankNumber = PlayerPrefs.GetInt("TankNumber");
+        Debug.Log(PlayerPrefs.GetInt("TankNumber"));
     }
 
     //--------------------------------------------------Pause Button Script------------------------------------------------
@@ -65,8 +66,9 @@ public class MenuManager : MonoBehaviour
                 tankNumber = 8;
             }
 
+            PlayerPrefs.SetInt("TankNumber", tankNumber);
+            Debug.Log(PlayerPrefs.GetInt("TankNumber"));
             FindAnyObjectByType<TankSetUpScript>().TankSetUp(tankNumber);
-
 
             if (tankNumber == 1 || tankNumber == 2)
             {
@@ -99,8 +101,7 @@ public class MenuManager : MonoBehaviour
         stagePanel.SetActive(true);
         stageText.text = stageNum.ToString();
     }
-
-    
+    // 
 
     public void StartButton(){
         gameStart = true;
